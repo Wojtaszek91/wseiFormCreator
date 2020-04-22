@@ -3,12 +3,18 @@
 /// <reference path="Model/Form.ts" />
 namespace App {
 
-    const field = new Field ("Imie", "Imie: ",FieldType.Text);
-    const field1 = new Field ("Emial", "Emial: ",FieldType.EmailField);
+    // create form form
+    const options = ['text','email','textarea','date','select','checkbox']
+    const field = new Field ("typ", "Typ pola: ", FieldType.SelectField, options);
     var formDiv = field.CreateField(field);
-    var formdiv1 = field.CreateField(field1);
-    var finalform: HTMLFormElement[] = [formDiv, formdiv1];
+
+    const field1 = new Field ("opis", "Opis: ",FieldType.Text);
+    var formdiv1 = field1.CreateField(field1);
+
+    var finalform: HTMLFormElement[] = [formdiv1, formDiv];
     const form = new Form(finalform);
     const elo = document.getElementById('try');
     elo!.append(form.createForm());
+
+    // listaInputow dla form + id
 }

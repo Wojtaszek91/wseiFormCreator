@@ -14,30 +14,55 @@ var App;
 var App;
 (function (App) {
     class Field {
-        constructor(name, label, fieldType) {
+        constructor(name, label, fieldType, selectOptions) {
             this.name = name;
             this.label = label;
             this.fieldType = fieldType;
+            this.selectOptions = selectOptions;
         }
         CreateField(field) {
-            const newInput = document.createElement('input');
+            const newInput = document.createElement("input");
+            const finalInput = document.createElement("div");
             switch (field.fieldType) {
                 case App.FieldType.CheckboxField:
-                    newInput.type = 'checkbox';
+                    newInput.type = "checkbox";
+                    break;
                 case App.FieldType.DateField:
-                    newInput.type = 'date';
+                    newInput.type = "date";
+                    break;
                 case App.FieldType.EmailField:
-                    newInput.type = 'email';
+                    newInput.type = "email";
+                    break;
                 case App.FieldType.Text:
-                    newInput.type = 'text';
+                    newInput.type = "text";
+                    break;
                 case App.FieldType.SelectField:
-                    newInput.type = 'select';
+                    const selectField = this.createSelectedElWithOptions(this.selectOptions);
+                    finalInput.append(this.createLabel(field.label), selectField);
+                    return finalInput;
+                case App.FieldType.TextAreaField:
+                    const textArea = document.createElement("textarea");
+                    finalInput.append(this.createLabel(field.label), textArea);
+                    return finalInput;
             }
-            const newLabel = document.createElement('label');
-            newLabel.textContent = field.label;
-            const finalInput = document.createElement('div');
+            const newLabel = this.createLabel(field.label);
             finalInput.append(newLabel, newInput);
             return finalInput;
+        }
+        createLabel(labelTxt) {
+            const newLabel = document.createElement("label");
+            newLabel.textContent = labelTxt;
+            newLabel.htmlFor = this.name;
+            return newLabel;
+        }
+        createSelectedElWithOptions(optionsStringList) {
+            let selectField = document.createElement("select");
+            for (const option of optionsStringList) {
+                var optionEl = document.createElement('option');
+                optionEl.text = option;
+                selectField.add(optionEl);
+            }
+            return selectField;
         }
     }
     App.Field = Field;
@@ -62,11 +87,12 @@ var App;
 })(App || (App = {}));
 var App;
 (function (App) {
-    const field = new App.Field("Imie", "Imie: ", App.FieldType.Text);
-    const field1 = new App.Field("Emial", "Emial: ", App.FieldType.EmailField);
+    const options = ['text', 'email', 'textarea', 'date', 'select', 'checkbox'];
+    const field = new App.Field("typ", "Typ pola: ", App.FieldType.SelectField, options);
     var formDiv = field.CreateField(field);
-    var formdiv1 = field.CreateField(field1);
-    var finalform = [formDiv, formdiv1];
+    const field1 = new App.Field("opis", "Opis: ", App.FieldType.Text);
+    var formdiv1 = field1.CreateField(field1);
+    var finalform = [formdiv1, formDiv];
     const form = new App.Form(finalform);
     const elo = document.getElementById('try');
     elo.append(form.createForm());
