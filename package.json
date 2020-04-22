@@ -1,0 +1,26 @@
+{
+  "name": "package",
+  "version": "1.0.0",
+  "description": "none",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wojtaszek91/wseiFormCreator.git"
+  },
+  "keywords": [
+    "typescript"
+  ],
+  "author": "MichalWojtaszek",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Wojtaszek91/wseiFormCreator/issues"
+  },
+  "homepage": "https://github.com/Wojtaszek91/wseiFormCreator#readme",
+  "devDependencies": {
+    "lite-server": "^2.5.4"
+  }
+}
