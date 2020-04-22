@@ -1,9 +1,8 @@
 namespace App {
 export interface IFieldType {
 name: string,
-label: HTMLLabelElement,
+label: string,
 fieldType: FieldType,
-value: string,
-GetValue(): Function
 }
 }
+

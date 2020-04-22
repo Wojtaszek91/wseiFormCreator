@@ -6,7 +6,45 @@
     <title>Starter</title>
   </head>
   <body>
-<p>Heyyyo !</p>
+
+<h1>Choose form elements</h1>
+<div id="try"></div>
+<!-- Template to create form -->
+<template id="project-input">
+  <form>
+    <div class="form-control">
+      <label for="fieldInput">Input field</label>
+      <input type="checkbox" id="inputField"/>
+    </div>
+    <div class="form-control">
+      <label for="fieldTextArea">Text area</label>
+      <input type="checkbox" id="fieldTextArea"/>
+      
+    </div>
+    <div class="form-control">
+      <label for="people">People</label>
+      <input type="number" id="people" step="1" min="0" max="10" />
+    </div>
+    <button type="submit">ADD PROJECT</button>
+  </form>
+</template>
+
+<!-- template to display single for elements -->
+ <template id="single-form"></template>
+  <li draggable="true">
+  </li>
+</template>
+
+<!-- template to display created forms list -->
+<template id="form-list">
+  <section class="forms">
+    <header>
+      <h2></h2>
+    </header>
+    <ul></ul>
+  </section>
+</template>
+
     <script src="./src/dist/bundle.js" defer></script>
   </body>
 </html>
