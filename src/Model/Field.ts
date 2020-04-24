@@ -1,16 +1,29 @@
+/// <reference path="../decorator/autobind.ts"/>
+/// <reference path="basic.ts"/>
 namespace App {
-  export class Field implements IFieldType {
-    constructor(
-      public name: string,
-      public label: string,
-      public fieldType: FieldType,
-      public selectOptions?: string[]
-    ) {}
+    export class Field
+    implements IFieldType {
+        public name: string;
+        public label: string;
+        public fieldType: FieldType;
+        public selectOptions?: string[];
+        constructor(
+      name: string,
+      label: string,
+      fieldType: FieldType,
+      selectOptions?: string[]
+    ) {
+        this.name = name;
+        this.label = label;
+        this.fieldType = fieldType;
+        this.selectOptions = selectOptions;
+    }
 
-    CreateField(field: Field): any {
+    CreateField(): HTMLElement {
       const newInput = document.createElement("input");
       const finalInput = document.createElement("div");
-      switch (field.fieldType) {
+      finalInput.className = "form-control";
+      switch (this.fieldType) {
         case FieldType.CheckboxField:
           newInput.type = "checkbox";
           break;
@@ -22,19 +35,23 @@ namespace App {
           break;
         case FieldType.Text:
           newInput.type = "text";
+          newInput.value = 'elo';
           break;
         case FieldType.SelectField:
           const selectField = this.createSelectedElWithOptions(
             this.selectOptions!
           );
-          finalInput.append(this.createLabel(field.label), selectField);
+          finalInput.append(this.createLabel(this.label), selectField);
+          finalInput.id = this.name;
           return finalInput;
         case FieldType.TextAreaField:
           const textArea = document.createElement("textarea");
-          finalInput.append(this.createLabel(field.label), textArea);
+          textArea.id = this.name;
+          finalInput.append(this.createLabel(this.label), textArea);
           return finalInput;
       }
-      const newLabel = this.createLabel(field.label);
+      const newLabel = this.createLabel(this.label);
+      newInput.id = this.name;
       finalInput.append(newLabel, newInput);
       return finalInput;
     }
@@ -52,7 +69,7 @@ namespace App {
     ): HTMLSelectElement {
       let selectField = document.createElement("select");
       for (const option of optionsStringList) {
-        var optionEl = document.createElement('option') as HTMLOptionElement;
+        var optionEl = document.createElement("option") as HTMLOptionElement;
         optionEl.text = option;
         selectField.add(optionEl);
       }

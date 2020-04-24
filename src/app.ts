@@ -1,20 +1,35 @@
 /// <reference path="Enum/FieldType.ts" />
 /// <reference path="Model/Field.ts" />
 /// <reference path="Model/Form.ts" />
+/// <reference path="decorator/autobind.ts"/>
+/// <reference path="Model/FieldsList.ts"/>
+/// <reference path="Model/FormControl.ts"/>
 namespace App {
-
-    // create form form
+    const fieldsList = new FieldsList();
+  //  create form template
     const options = ['text','email','textarea','date','select','checkbox']
-    const field = new Field ("typ", "Typ pola: ", FieldType.SelectField, options);
-    var formDiv = field.CreateField(field);
+    const input1 = new Field ('1', "Typ pola: ", FieldType.SelectField, options);
+    ;
+    const input2 = new Field ('2', "Opis: ",FieldType.Text);
+    ;
+  
+    fieldsList.manipulateFields(input1,true);
+    fieldsList.manipulateFields(input2,true);
+    
+    const form = new Form('form',[input1.CreateField(),input2.CreateField()]);
+        
+    form.renderContent();
+    const controlForm = new FormControl(document.getElementById('10') as HTMLFormElement);
+    controlForm.gatherInputs();
 
-    const field1 = new Field ("opis", "Opis: ",FieldType.Text);
-    var formdiv1 = field1.CreateField(field1);
-
-    var finalform: HTMLFormElement[] = [formdiv1, formDiv];
-    const form = new Form(finalform);
-    const elo = document.getElementById('try');
-    elo!.append(form.createForm());
-
-    // listaInputow dla form + id
+//     const field5 = new Field (form.fieldIdList.length.toString(), "Opis: ",FieldType.Text);
+//     var formdiv5 = field5.CreateField();
+//     var finalform1: HTMLFormElement[] = [formdiv5];
+    
+    
+//   // submit the form template  
+//     const elo = document.getElementById('try');
+//     elo!.append(form.createForm(finalform));
+//     // render form
+//    form.renderContent('render',form.createForm(finalform1));
 }

@@ -1,5 +1,5 @@
 namespace App{
 export enum FieldType {
-    Text, TextAreaField, DateField, EmailField, SelectField, CheckboxField
+    Text = 'Text', TextAreaField = 'TextArea', DateField = 'Date', EmailField = 'Email', SelectField = 'Selected', CheckboxField = 'Checkbox'
 }
 }
