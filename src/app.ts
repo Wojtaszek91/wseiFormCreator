@@ -20,7 +20,7 @@ namespace App {
         
     form.renderContent();
     const controlForm = new FormControl(document.getElementById('10') as HTMLFormElement);
-    controlForm.gatherInputs();
+    controlForm.gatherInputElements();
 
 //     const field5 = new Field (form.fieldIdList.length.toString(), "Opis: ",FieldType.Text);
 //     var formdiv5 = field5.CreateField();

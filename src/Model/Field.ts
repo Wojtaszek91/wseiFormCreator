@@ -19,7 +19,7 @@ namespace App {
         this.selectOptions = selectOptions;
     }
 
-    CreateField(): HTMLElement {
+    CreateField(): HTMLDivElement {
       const newInput = document.createElement("input");
       const finalInput = document.createElement("div");
       finalInput.className = "form-control";
@@ -41,6 +41,7 @@ namespace App {
           const selectField = this.createSelectedElWithOptions(
             this.selectOptions!
           );
+          selectField.id = this.name
           finalInput.append(this.createLabel(this.label), selectField);
           finalInput.id = this.name;
           return finalInput;

@@ -17,7 +17,7 @@ namespace App {
             ulList.innerHTML = "";
             for(const fieldEl of this.fieldsList){
                 let newLiEl = document.createElement('li');
-                newLiEl.innerHTML = fieldEl.label;
+                newLiEl.innerHTML = `Label :${fieldEl.label} <br> Field type : ${fieldEl.fieldType}`;
                 ulList.appendChild(newLiEl);
             }
               }

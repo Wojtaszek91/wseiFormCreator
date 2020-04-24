@@ -72,6 +72,7 @@ var App;
                     break;
                 case App.FieldType.SelectField:
                     const selectField = this.createSelectedElWithOptions(this.selectOptions);
+                    selectField.id = this.name;
                     finalInput.append(this.createLabel(this.label), selectField);
                     finalInput.id = this.name;
                     return finalInput;
@@ -151,7 +152,7 @@ var App;
             ulList.innerHTML = "";
             for (const fieldEl of this.fieldsList) {
                 let newLiEl = document.createElement('li');
-                newLiEl.innerHTML = fieldEl.label;
+                newLiEl.innerHTML = `Label :${fieldEl.label} <br> Field type : ${fieldEl.fieldType}`;
                 ulList.appendChild(newLiEl);
             }
         }
@@ -163,13 +164,45 @@ var App;
     class FormControl {
         constructor(form) {
             this.form = form;
+            this.inputsList = [];
         }
-        gatherInputs() {
+        gatherInputElements() {
             const elements = this.form.elements;
             for (const control of elements) {
                 const el = control;
-                console.log(el.value);
+                this.inputsList.push(el);
             }
+            this.renderValues();
+        }
+        renderValues() {
+            const el = document.getElementById("values");
+            let newEl = document.createElement("p");
+            for (const inputel of this.inputsList) {
+                if (inputel instanceof HTMLInputElement) {
+                    const elo = document.createElement("p");
+                    elo.innerHTML = `Label: "${inputel.labels[0].innerHTML}" <br> Typ pola: "${inputel.type}" <br> Wartosc pola: "${inputel.value}"`;
+                    el.append(elo);
+                }
+                if (inputel instanceof HTMLTextAreaElement ||
+                    inputel instanceof HTMLSelectElement) {
+                    const labeltxt = this.findLabel(inputel.id);
+                    console.log(inputel.id);
+                    console.log(labeltxt);
+                    newEl.innerHTML = `Label: "${labeltxt.textContent}" <br> Typ pola: ${inputel.type} <br> Wartosc pola: ${inputel.value}`;
+                    el.append(newEl);
+                }
+            }
+        }
+        findLabel(id) {
+            const labels = document.getElementsByTagName('LABEL');
+            let labelOutput = document.createElement('label');
+            for (var i = 0; i < labels.length; i++) {
+                let labelOutput = labels[i];
+                if (labelOutput.htmlFor == id) {
+                    return labelOutput;
+                }
+            }
+            return labelOutput;
         }
     }
     App.FormControl = FormControl;
@@ -187,6 +220,6 @@ var App;
     const form = new App.Form('form', [input1.CreateField(), input2.CreateField()]);
     form.renderContent();
     const controlForm = new App.FormControl(document.getElementById('10'));
-    controlForm.gatherInputs();
+    controlForm.gatherInputElements();
 })(App || (App = {}));
 //# sourceMappingURL=bundle.js.map
