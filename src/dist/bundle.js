@@ -1,4 +1,10 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 var App;
 (function (App) {
     let FieldType;
@@ -120,6 +126,7 @@ var App;
             const submitButton = document.createElement("button");
             submitButton.innerHTML = "Dodaj";
             submitButton.type = "submit";
+            submitButton.addEventListener("submit", this.SubmitHandler);
             newForm.append(submitButton);
             newForm.id = '10';
             return newForm;
@@ -128,31 +135,42 @@ var App;
         renderContent() {
             this.element.append(this.createForm());
         }
+        SubmitHandler(event) {
+            event.preventDefault();
+        }
     }
+    __decorate([
+        App.autoBind
+    ], Form.prototype, "SubmitHandler", null);
     App.Form = Form;
 })(App || (App = {}));
 var App;
 (function (App) {
     class FieldsList extends App.Component {
         constructor() {
-            super('form-list', 'fields', false);
+            super("form-list", "fields", false);
             this.fieldsList = [];
+            this.htmlElementsList = [];
         }
         manipulateFields(field, add) {
-            if (add)
+            if (add) {
                 this.fieldsList.push(field);
-            else
-                this.fieldsList.filter(item => item === field);
+                this.htmlElementsList.push(field.CreateField());
+            }
+            else {
+                this.fieldsList.filter((item) => item.name === field.name);
+                this.htmlElementsList.filter(item => item.id === field.name);
+            }
             this.renderContent();
         }
         configurate() { }
         renderContent() {
-            this.element.querySelector('header').innerHTML = 'Lista dodanych pol';
-            const ulList = this.element.querySelector('ul');
+            this.element.querySelector("header").innerHTML = "Lista dodanych pol";
+            const ulList = this.element.querySelector("ul");
             ulList.innerHTML = "";
             for (const fieldEl of this.fieldsList) {
-                let newLiEl = document.createElement('li');
-                newLiEl.innerHTML = `Label :${fieldEl.label} <br> Field type : ${fieldEl.fieldType}`;
+                let newLiEl = document.createElement("li");
+                newLiEl.innerHTML = `Label: "${fieldEl.label}" <br> Field type: "${fieldEl.fieldType}"`;
                 ulList.appendChild(newLiEl);
             }
         }
@@ -179,15 +197,13 @@ var App;
             let newEl = document.createElement("p");
             for (const inputel of this.inputsList) {
                 if (inputel instanceof HTMLInputElement) {
-                    const elo = document.createElement("p");
-                    elo.innerHTML = `Label: "${inputel.labels[0].innerHTML}" <br> Typ pola: "${inputel.type}" <br> Wartosc pola: "${inputel.value}"`;
-                    el.append(elo);
+                    const pElement = document.createElement("p");
+                    pElement.innerHTML = `Label: "${inputel.labels[0].innerHTML}" <br> Typ pola: "${inputel.type}" <br> Wartosc pola: "${inputel.value}"`;
+                    el.append(pElement);
                 }
                 if (inputel instanceof HTMLTextAreaElement ||
                     inputel instanceof HTMLSelectElement) {
                     const labeltxt = this.findLabel(inputel.id);
-                    console.log(inputel.id);
-                    console.log(labeltxt);
                     newEl.innerHTML = `Label: "${labeltxt.textContent}" <br> Typ pola: ${inputel.type} <br> Wartosc pola: ${inputel.value}`;
                     el.append(newEl);
                 }
@@ -211,13 +227,9 @@ var App;
 (function (App) {
     const fieldsList = new App.FieldsList();
     const options = ['text', 'email', 'textarea', 'date', 'select', 'checkbox'];
-    const input1 = new App.Field('1', "Typ pola: ", App.FieldType.SelectField, options);
-    ;
-    const input2 = new App.Field('2', "Opis: ", App.FieldType.Text);
-    ;
-    fieldsList.manipulateFields(input1, true);
-    fieldsList.manipulateFields(input2, true);
-    const form = new App.Form('form', [input1.CreateField(), input2.CreateField()]);
+    fieldsList.manipulateFields(new App.Field('1', "Typ pola: ", App.FieldType.SelectField, options), true);
+    fieldsList.manipulateFields(new App.Field('2', "Opis: ", App.FieldType.Text), true);
+    const form = new App.Form('form', fieldsList.htmlElementsList);
     form.renderContent();
     const controlForm = new App.FormControl(document.getElementById('10'));
     controlForm.gatherInputElements();

@@ -19,21 +19,19 @@ namespace App {
       let newEl = document.createElement("p");
       for (const inputel of this.inputsList) {
         if (inputel instanceof HTMLInputElement) {
-          const elo = document.createElement("p");
-          elo.innerHTML = `Label: "${
+          const pElement = document.createElement("p");
+          pElement.innerHTML = `Label: "${
             inputel.labels![0].innerHTML
           }" <br> Typ pola: "${inputel.type}" <br> Wartosc pola: "${
             inputel.value
           }"`;
-          el!.append(elo);
+          el!.append(pElement);
         }
         if (
           inputel instanceof HTMLTextAreaElement ||
           inputel instanceof HTMLSelectElement
         ) {
           const labeltxt = this.findLabel(inputel.id);
-          console.log(inputel.id)
-          console.log(labeltxt);
           newEl.innerHTML = `Label: "${labeltxt.textContent}" <br> Typ pola: ${inputel.type} <br> Wartosc pola: ${inputel.value}`;
           el!.append(newEl);
         }

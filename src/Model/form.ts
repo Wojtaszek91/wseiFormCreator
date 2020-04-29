@@ -18,8 +18,11 @@ namespace App {
       const submitButton = document.createElement("button");
       submitButton.innerHTML = "Dodaj";
       submitButton.type = "submit";
+      submitButton.addEventListener("submit", this.SubmitHandler);
       newForm.append(submitButton);
       newForm.id = '10';
+      //const formCtrl = new FormControl(newForm);
+
       return newForm;
     }
     configurate(){}
@@ -28,10 +31,10 @@ namespace App {
     }
 
    // this.element.addEventListener("submit", this.SubmitHandler);
-//    @autoBind
-//    private SubmitHandler(event: Event) {
-//     event.preventDefault();
-//     }
+   @autoBind
+   private SubmitHandler(event: Event) {
+    event.preventDefault();
+    }
   }
   }
 
