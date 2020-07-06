@@ -3,36 +3,28 @@ namespace App {
     public inputsList: HTMLElement[] = [];
     constructor(public form: HTMLFormElement) {}
 
-    gatherInputElements() {
-      const elements = this.form.elements;
 
-      for (const control of elements) {
-        const el = control as HTMLElement;
-        this.inputsList.push(el);
-      }
-      this.renderValues();
-    }
 
     renderValues() {
       const el = document.getElementById("values");
 
       let newEl = document.createElement("p");
-      for (const inputel of this.inputsList) {
-        if (inputel instanceof HTMLInputElement) {
+      for (const inputEl of this.inputsList) {
+        if (inputEl instanceof HTMLInputElement) {
           const pElement = document.createElement("p");
           pElement.innerHTML = `Label: "${
-            inputel.labels![0].innerHTML
-          }" <br> Typ pola: "${inputel.type}" <br> Wartosc pola: "${
-            inputel.value
+            inputEl.labels![0].innerHTML
+          }" <br> Typ pola: "${inputEl.type}" <br> Wartosc pola: "${
+            inputEl.value
           }"`;
           el!.append(pElement);
         }
         if (
-          inputel instanceof HTMLTextAreaElement ||
-          inputel instanceof HTMLSelectElement
+          inputEl instanceof HTMLTextAreaElement ||
+          inputEl instanceof HTMLSelectElement
         ) {
-          const labeltxt = this.findLabel(inputel.id);
-          newEl.innerHTML = `Label: "${labeltxt.textContent}" <br> Typ pola: ${inputel.type} <br> Wartosc pola: ${inputel.value}`;
+          const labeltxt = this.findLabel(inputEl.id);
+          newEl.innerHTML = `Label: "${labeltxt.textContent}" <br> Typ pola: ${inputEl.type} <br> Wartosc pola: ${inputEl.value}`;
           el!.append(newEl);
         }
       }

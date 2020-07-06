@@ -1,8 +1,9 @@
-namespace App {
+import  {FieldLabel } from "../Model/FieldLabel.js";
 export interface IFieldType {
-name: string,
-label: string,
-fieldType: FieldType,
+label: FieldLabel,
+fieldType: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement,
+GetValue(): string,
+Render(hostingElement: HTMLElement): void
 }
-}
+
 

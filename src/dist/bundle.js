@@ -1,121 +1,152 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var App;
-(function (App) {
-    let FieldType;
-    (function (FieldType) {
-        FieldType["Text"] = "Text";
-        FieldType["TextAreaField"] = "TextArea";
-        FieldType["DateField"] = "Date";
-        FieldType["EmailField"] = "Email";
-        FieldType["SelectField"] = "Selected";
-        FieldType["CheckboxField"] = "Checkbox";
-    })(FieldType = App.FieldType || (App.FieldType = {}));
-})(App || (App = {}));
-var App;
-(function (App) {
-    function autoBind(_, _1, descriptor) {
-        const originalMethod = descriptor.value;
-        const newDescriptor = {
-            configurable: true,
-            get() {
-                return originalMethod.bind(this);
-            },
-        };
-        return newDescriptor;
-    }
-    App.autoBind = autoBind;
-})(App || (App = {}));
-var App;
-(function (App) {
-    class Component {
-        constructor(templateId, hostedElId, insertAtStart, newElementId) {
-            this.templateElement = document.getElementById(templateId);
-            this.hostedElement = document.getElementById(hostedElId);
-            const importNode = document.importNode(this.templateElement.content, true);
-            this.element = importNode.firstElementChild;
-            if (newElementId)
-                this.element.id = newElementId;
-            this.attach(insertAtStart);
-        }
-        attach(insertAtBeggining) {
-            this.hostedElement.insertAdjacentElement(insertAtBeggining ? "afterbegin" : "beforeend", this.element);
-        }
-    }
-    App.Component = Component;
-})(App || (App = {}));
-var App;
-(function (App) {
-    class Field {
-        constructor(name, label, fieldType, selectOptions) {
-            this.name = name;
-            this.label = label;
-            this.fieldType = fieldType;
-            this.selectOptions = selectOptions;
-        }
-        CreateField() {
-            const newInput = document.createElement("input");
-            const finalInput = document.createElement("div");
-            finalInput.className = "form-control";
-            switch (this.fieldType) {
-                case App.FieldType.CheckboxField:
-                    newInput.type = "checkbox";
-                    break;
-                case App.FieldType.DateField:
-                    newInput.type = "date";
-                    break;
-                case App.FieldType.EmailField:
-                    newInput.type = "email";
-                    break;
-                case App.FieldType.Text:
-                    newInput.type = "text";
-                    newInput.value = 'elo';
-                    break;
-                case App.FieldType.SelectField:
-                    const selectField = this.createSelectedElWithOptions(this.selectOptions);
-                    selectField.id = this.name;
-                    finalInput.append(this.createLabel(this.label), selectField);
-                    finalInput.id = this.name;
-                    return finalInput;
-                case App.FieldType.TextAreaField:
-                    const textArea = document.createElement("textarea");
-                    textArea.id = this.name;
-                    finalInput.append(this.createLabel(this.label), textArea);
-                    return finalInput;
+define("Interfaces/IDataStorage", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+});
+define("LocStorage", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class LocStorage {
+        SaveDocument(document) {
+            const newDocumentId = 'Document-'.concat(Date.now().toString());
+            localStorage.setItem(newDocumentId, JSON.stringify(document));
+            let docsIds = localStorage.getItem('DocumentsIds');
+            if (docsIds === null) {
+                let docsIds = new Array();
+                docsIds.push(newDocumentId);
+                localStorage.setItem('DocumentsIds', JSON.stringify(docsIds));
             }
-            const newLabel = this.createLabel(this.label);
-            newInput.id = this.name;
-            finalInput.append(newLabel, newInput);
-            return finalInput;
-        }
-        createLabel(labelTxt) {
-            const newLabel = document.createElement("label");
-            newLabel.textContent = labelTxt;
-            newLabel.htmlFor = this.name;
-            return newLabel;
-        }
-        createSelectedElWithOptions(optionsStringList) {
-            let selectField = document.createElement("select");
-            for (const option of optionsStringList) {
-                var optionEl = document.createElement("option");
-                optionEl.text = option;
-                selectField.add(optionEl);
+            else {
+                let docsIds = JSON.parse(localStorage.getItem('DocumentsIds'));
+                docsIds.push(newDocumentId);
+                localStorage.setItem('DocumentsIds', JSON.stringify(docsIds));
             }
-            return selectField;
+            return newDocumentId;
+        }
+        LoadDocument(Id) {
+            let documentFromStorage = localStorage.getItem(Id);
+            if (documentFromStorage != null) {
+                return JSON.parse(documentFromStorage);
+            }
+        }
+        GetDocuments() {
+            let documentsIds = new Array();
+            for (let i = 0; i < localStorage.length; i++) {
+                documentsIds.push(localStorage.key(i));
+            }
+            return documentsIds;
         }
     }
-    App.Field = Field;
-})(App || (App = {}));
+    exports.LocStorage = LocStorage;
+});
+define("DocumentsList", ["require", "exports", "LocStorage"], function (require, exports, LocStorage_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class DocumentList {
+        constructor() {
+            this.ListOfDocsIds = this.getDocumentList();
+        }
+        getDocumentList() {
+            let locStor = new LocStorage_1.LocStorage();
+            return locStor.GetDocuments();
+        }
+        Render(containerId) {
+            var _a;
+            let tableWithDocsIds = document.createElement('table');
+            let dataArray = new Array();
+            dataArray.push('Documents Id');
+            this.GenerateTableHead(tableWithDocsIds, dataArray);
+            this.GenerateTable(tableWithDocsIds, this.ListOfDocsIds);
+            (_a = document.getElementById(containerId)) === null || _a === void 0 ? void 0 : _a.appendChild(tableWithDocsIds);
+        }
+        GenerateTableHead(table, headersData) {
+            let thead = table.createTHead();
+            let row = thead.insertRow();
+            for (let key of headersData) {
+                let th = document.createElement("th");
+                let text = document.createTextNode(key);
+                th.appendChild(text);
+                row.appendChild(th);
+            }
+        }
+        GenerateTable(table, rowsData) {
+            for (let element of rowsData) {
+                let row = table.insertRow();
+                for (let key in element) {
+                    let cell = row.insertCell();
+                    let text = document.createTextNode(element[key]);
+                    cell.appendChild(text);
+                }
+            }
+        }
+    }
+    exports.DocumentList = DocumentList;
+});
+define("Model/FieldLabel", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class FieldLabel {
+        constructor(labelText, labelFor) {
+            this.label = document.createElement('label');
+            this.SetHtmlFor(labelFor);
+            this.SetTextContent(labelText);
+        }
+        GetValue() {
+            return this.label.textContent;
+        }
+        RenderLabel(divElement) {
+            divElement.appendChild(this.label);
+        }
+        SetHtmlFor(htmlFor) {
+            this.label.htmlFor = htmlFor;
+        }
+        SetTextContent(labelText) {
+            this.label.textContent = labelText;
+        }
+    }
+    exports.FieldLabel = FieldLabel;
+});
+define("Interfaces/IFieldtype", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+});
+define("Enum/FieldType", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+});
+define("Model/InputField", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class InputField {
+        constructor(idOfField, labelField) {
+            this.fieldId = idOfField;
+            this.label = labelField;
+            this.fieldType = document.createElement("input");
+        }
+        GetValue() {
+            return this.fieldType.value;
+        }
+        Render(hostingElement) {
+            hostingElement.appendChild(this.fieldType);
+        }
+    }
+    exports.InputField = InputField;
+});
+define("app", ["require", "exports", "Model/FieldLabel", "Model/InputField"], function (require, exports, FieldLabel_js_1, InputField_js_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    let div = document.createElement("div");
+    let label = new FieldLabel_js_1.FieldLabel("Opis labelka", "InputId");
+    label.RenderLabel(div);
+    let temp = document.getElementById('try');
+    let inputField = new InputField_js_1.InputField('id', label);
+    inputField.Render(temp);
+    temp.appendChild(div);
+});
 var App;
 (function (App) {
-    class Form extends App.Component {
+    class Form {
         constructor(id, fieldInputs) {
-            super("template-form", "render", false);
             this.fieldIdList = [];
             this.id = id;
             this.fieldInputs = fieldInputs;
@@ -126,56 +157,15 @@ var App;
             const submitButton = document.createElement("button");
             submitButton.innerHTML = "Dodaj";
             submitButton.type = "submit";
-            submitButton.addEventListener("submit", this.SubmitHandler);
             newForm.append(submitButton);
             newForm.id = '10';
             return newForm;
         }
         configurate() { }
         renderContent() {
-            this.element.append(this.createForm());
-        }
-        SubmitHandler(event) {
-            event.preventDefault();
         }
     }
-    __decorate([
-        App.autoBind
-    ], Form.prototype, "SubmitHandler", null);
     App.Form = Form;
-})(App || (App = {}));
-var App;
-(function (App) {
-    class FieldsList extends App.Component {
-        constructor() {
-            super("form-list", "fields", false);
-            this.fieldsList = [];
-            this.htmlElementsList = [];
-        }
-        manipulateFields(field, add) {
-            if (add) {
-                this.fieldsList.push(field);
-                this.htmlElementsList.push(field.CreateField());
-            }
-            else {
-                this.fieldsList.filter((item) => item.name === field.name);
-                this.htmlElementsList.filter(item => item.id === field.name);
-            }
-            this.renderContent();
-        }
-        configurate() { }
-        renderContent() {
-            this.element.querySelector("header").innerHTML = "Lista dodanych pol";
-            const ulList = this.element.querySelector("ul");
-            ulList.innerHTML = "";
-            for (const fieldEl of this.fieldsList) {
-                let newLiEl = document.createElement("li");
-                newLiEl.innerHTML = `Label: "${fieldEl.label}" <br> Field type: "${fieldEl.fieldType}"`;
-                ulList.appendChild(newLiEl);
-            }
-        }
-    }
-    App.FieldsList = FieldsList;
 })(App || (App = {}));
 var App;
 (function (App) {
@@ -195,16 +185,16 @@ var App;
         renderValues() {
             const el = document.getElementById("values");
             let newEl = document.createElement("p");
-            for (const inputel of this.inputsList) {
-                if (inputel instanceof HTMLInputElement) {
+            for (const inputEl of this.inputsList) {
+                if (inputEl instanceof HTMLInputElement) {
                     const pElement = document.createElement("p");
-                    pElement.innerHTML = `Label: "${inputel.labels[0].innerHTML}" <br> Typ pola: "${inputel.type}" <br> Wartosc pola: "${inputel.value}"`;
+                    pElement.innerHTML = `Label: "${inputEl.labels[0].innerHTML}" <br> Typ pola: "${inputEl.type}" <br> Wartosc pola: "${inputEl.value}"`;
                     el.append(pElement);
                 }
-                if (inputel instanceof HTMLTextAreaElement ||
-                    inputel instanceof HTMLSelectElement) {
-                    const labeltxt = this.findLabel(inputel.id);
-                    newEl.innerHTML = `Label: "${labeltxt.textContent}" <br> Typ pola: ${inputel.type} <br> Wartosc pola: ${inputel.value}`;
+                if (inputEl instanceof HTMLTextAreaElement ||
+                    inputEl instanceof HTMLSelectElement) {
+                    const labeltxt = this.findLabel(inputEl.id);
+                    newEl.innerHTML = `Label: "${labeltxt.textContent}" <br> Typ pola: ${inputEl.type} <br> Wartosc pola: ${inputEl.value}`;
                     el.append(newEl);
                 }
             }
@@ -225,13 +215,16 @@ var App;
 })(App || (App = {}));
 var App;
 (function (App) {
-    const fieldsList = new App.FieldsList();
-    const options = ['text', 'email', 'textarea', 'date', 'select', 'checkbox'];
-    fieldsList.manipulateFields(new App.Field('1', "Typ pola: ", App.FieldType.SelectField, options), true);
-    fieldsList.manipulateFields(new App.Field('2', "Opis: ", App.FieldType.Text), true);
-    const form = new App.Form('form', fieldsList.htmlElementsList);
-    form.renderContent();
-    const controlForm = new App.FormControl(document.getElementById('10'));
-    controlForm.gatherInputElements();
+    function autoBind(_, _1, descriptor) {
+        const originalMethod = descriptor.value;
+        const newDescriptor = {
+            configurable: true,
+            get() {
+                return originalMethod.bind(this);
+            },
+        };
+        return newDescriptor;
+    }
+    App.autoBind = autoBind;
 })(App || (App = {}));
 //# sourceMappingURL=bundle.js.map
