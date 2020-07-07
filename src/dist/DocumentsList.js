@@ -1,5 +1,5 @@
-import { LocStorage } from "./LocStorage";
-export class DocumentList {
+import { LocStorage } from "./LocStorage.js";
+export class DocumentsList {
     constructor() {
         this.ListOfDocsIds = this.getDocumentList();
     }
@@ -7,14 +7,16 @@ export class DocumentList {
         let locStor = new LocStorage();
         return locStor.GetDocuments();
     }
-    Render(containerId) {
+    Render() {
         var _a;
         let tableWithDocsIds = document.createElement('table');
         let dataArray = new Array();
         dataArray.push('Documents Id');
+        dataArray.push('Edit');
+        dataArray.push('Delete');
         this.GenerateTableHead(tableWithDocsIds, dataArray);
         this.GenerateTable(tableWithDocsIds, this.ListOfDocsIds);
-        (_a = document.getElementById(containerId)) === null || _a === void 0 ? void 0 : _a.appendChild(tableWithDocsIds);
+        (_a = document.getElementById('tableDiv')) === null || _a === void 0 ? void 0 : _a.appendChild(tableWithDocsIds);
     }
     GenerateTableHead(table, headersData) {
         let thead = table.createTHead();
@@ -26,15 +28,29 @@ export class DocumentList {
             row.appendChild(th);
         }
     }
-    GenerateTable(table, rowsData) {
-        for (let element of rowsData) {
-            let row = table.insertRow();
-            for (let key in element) {
-                let cell = row.insertCell();
-                let text = document.createTextNode(element[key]);
-                cell.appendChild(text);
-            }
+    GenerateTable(table, docData) {
+        let locStor = new LocStorage();
+        let tbody = document.createElement('tbody');
+        for (let element of docData) {
+            let row = tbody.insertRow();
+            let cellDocId = row.insertCell();
+            let textDocId = document.createTextNode(element);
+            cellDocId.appendChild(textDocId);
+            let cellEdit = row.insertCell();
+            let editLink = document.createElement("a");
+            editLink.setAttribute("href", "edit-document.html?id=".concat(element));
+            var EditLinkText = document.createTextNode("edit");
+            editLink.appendChild(EditLinkText);
+            cellEdit.appendChild(editLink);
+            let cellDelete = row.insertCell();
+            let deleteLink = document.createElement("a");
+            deleteLink.addEventListener('click', () => { locStor.DeleteDocument(element); });
+            deleteLink.setAttribute("href", 'document-list.html');
+            var DeleteLinkText = document.createTextNode("delete");
+            deleteLink.appendChild(DeleteLinkText);
+            cellDelete.appendChild(deleteLink);
         }
+        table.appendChild(tbody);
     }
 }
 //# sourceMappingURL=DocumentsList.js.map

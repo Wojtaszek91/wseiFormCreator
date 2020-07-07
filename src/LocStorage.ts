@@ -1,10 +1,8 @@
 import {IDataStorage} from "./Interfaces/IDataStorage.js"
     export class LocStorage implements IDataStorage {
 
-        SaveDocument(doc:any) {
-            const newDocumentId = 'Document-'.concat(Date.now().toString());
-            console.log(doc);
-            localStorage.setItem(newDocumentId,JSON.stringify(doc));
+        SaveDocumentInList(newDocumentId: string){
+
             let docsIds = localStorage.getItem('DocumentsIds');
             if(docsIds === null){
                 let docsIds:string[] = new Array();
@@ -15,7 +13,14 @@ import {IDataStorage} from "./Interfaces/IDataStorage.js"
                 let docsIds: string[] = JSON.parse(localStorage.getItem('DocumentsIds')!);
                 docsIds.push(newDocumentId);
                 localStorage.setItem('DocumentsIds', JSON.stringify(docsIds));
-            }
+            }        
+        }
+        SaveDocument(doc:any) {
+            const newDocumentId = 'Document-'.concat(Date.now().toString());
+            console.log(doc);
+            localStorage.setItem(newDocumentId,JSON.stringify(doc));
+            this.SaveDocumentInList(newDocumentId);
+
             return newDocumentId;
 
         }
@@ -25,11 +30,18 @@ import {IDataStorage} from "./Interfaces/IDataStorage.js"
                 return JSON.parse(documentFromStorage);
             }
         }
-        GetDocuments(): string[] {
-            let documentsIds:string[] = new Array();
-            for (let i = 0; i < localStorage.length; i++){
-                documentsIds.push(localStorage.key(i)!);
+        DeleteDocument(Id: string){
+            localStorage.removeItem(Id);
+            let docsList = this.GetDocuments();
+            let docIndex = docsList.indexOf(Id);
+            docsList.splice(docIndex,1);
+            localStorage.setItem('DocumentsIds', JSON.stringify(docsList));
         }
-                return documentsIds;
+        GetDocuments(): string[] {
+            let docs = localStorage.getItem('DocumentsIds');
+            if(docs != null){
+            let parsedDocs = JSON.parse(docs);
+            return parsedDocs as string[];
+            } else return new Array();
     }
     }

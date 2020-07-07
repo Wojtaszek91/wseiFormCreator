@@ -14,15 +14,15 @@ export class Form {
     }
     Render(divElement) {
         let saveButton = document.createElement('button');
-        saveButton.textContent = 'Save';
+        saveButton.textContent = 'Zapisz';
         let values = this.GetValue();
         saveButton.addEventListener('click', () => this.storage.SaveDocument(values));
         let cancelButton = document.createElement('button');
-        cancelButton.textContent = 'Cancel';
+        cancelButton.textContent = 'Anuluj';
         cancelButton.addEventListener('click', () => window.location.assign("/index.html"));
+        divElement.appendChild(this.form);
         divElement.appendChild(saveButton);
         divElement.appendChild(cancelButton);
-        divElement.appendChild(this.form);
     }
     GetValue() {
         let values = [];

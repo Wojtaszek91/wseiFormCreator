@@ -62,5 +62,7 @@ import { Form } from "./Model/form.js";
     let temp = document.getElementById('try') as HTMLDivElement;
     newForm.Render(temp);
 
+
+
   
   // temp.appendChild(newForm.GetValue());
