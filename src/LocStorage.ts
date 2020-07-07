@@ -1,8 +1,10 @@
 import {IDataStorage} from "./Interfaces/IDataStorage.js"
     export class LocStorage implements IDataStorage {
-        SaveDocument(document:any) {
+
+        SaveDocument(doc:any) {
             const newDocumentId = 'Document-'.concat(Date.now().toString());
-            localStorage.setItem(newDocumentId,JSON.stringify(document));
+            console.log(doc);
+            localStorage.setItem(newDocumentId,JSON.stringify(doc));
             let docsIds = localStorage.getItem('DocumentsIds');
             if(docsIds === null){
                 let docsIds:string[] = new Array();

@@ -9,6 +9,7 @@ import { Form } from "./Model/form.js";
 
 
 
+
     let div = document.createElement("div");
     let divArea = document.createElement("div");
     let divDate = document.createElement('div');
@@ -60,4 +61,6 @@ import { Form } from "./Model/form.js";
 
     let temp = document.getElementById('try') as HTMLDivElement;
     newForm.Render(temp);
+
+  
   // temp.appendChild(newForm.GetValue());

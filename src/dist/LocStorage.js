@@ -1,7 +1,8 @@
 export class LocStorage {
-    SaveDocument(document) {
+    SaveDocument(doc) {
         const newDocumentId = 'Document-'.concat(Date.now().toString());
-        localStorage.setItem(newDocumentId, JSON.stringify(document));
+        console.log(doc);
+        localStorage.setItem(newDocumentId, JSON.stringify(doc));
         let docsIds = localStorage.getItem('DocumentsIds');
         if (docsIds === null) {
             let docsIds = new Array();
