@@ -11,8 +11,14 @@ export class EmailField {
     GetValue() {
         return this.fieldType.value;
     }
+    SetDefaultValue(value) {
+        this.fieldType.defaultValue = value;
+    }
     Render(hostingElement) {
         hostingElement.appendChild(this.fieldType);
+    }
+    GetField() {
+        return this.fieldType;
     }
 }
 //# sourceMappingURL=EmailField.js.map

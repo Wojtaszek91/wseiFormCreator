@@ -13,10 +13,16 @@ export class CheckboxField implements IFieldType{
             this.label = labelField;
             
         }
-        GetValue() {
+        GetValue():string {
            return this.fieldType.checked.toString();
+        }
+        SetDefaultValue(value: string): void{
+            this.fieldType.checked = (value == 'true');
         }
         Render(hostingElement: HTMLDivElement){
             hostingElement.appendChild(this.fieldType);
+        }
+        GetField(): any{
+            return this.fieldType;
         }
     }

@@ -17,7 +17,13 @@ export class DateField implements IFieldType{
         GetValue() {
            return this.fieldType.value;
         }
+        SetDefaultValue(value: string){
+            this.fieldType.defaultValue = value;
+        }
         Render(hostingElement: HTMLDivElement){
             hostingElement.appendChild(this.fieldType);
+        }
+        GetField(): any{
+            return this.fieldType;
         }
     }

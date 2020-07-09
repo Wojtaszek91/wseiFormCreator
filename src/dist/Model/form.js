@@ -1,10 +1,11 @@
 import { LocStorage } from "../LocStorage.js";
 export class Form {
-    constructor(fieldInputs) {
+    constructor(fieldInputs, id) {
         this.fieldInputs = new Array();
         this.storage = new LocStorage();
         this.fieldInputs = fieldInputs;
         this.form = document.createElement("form");
+        this.form.id = id;
         fieldInputs.forEach((element) => {
             let newDiv = document.createElement('div');
             element.label.RenderLabel(newDiv);
@@ -12,26 +13,29 @@ export class Form {
             this.form.appendChild(newDiv);
         });
     }
-    Render(divElement) {
+    Render(divElement, isNewForm) {
         let saveButton = document.createElement('button');
-        saveButton.textContent = 'Zapisz';
-        let values = this.GetValue();
-        saveButton.addEventListener('click', () => this.storage.SaveDocument(values));
+        saveButton.textContent = 'Save';
+        saveButton.id = 'saveBtn';
+        if (isNewForm)
+            saveButton.addEventListener('click', () => this.storage.SaveDocument(this.GetValue(), this.form.id));
         let cancelButton = document.createElement('button');
-        cancelButton.textContent = 'Anuluj';
+        cancelButton.textContent = 'Cancel';
+        cancelButton.id = 'cancelBtn';
         cancelButton.addEventListener('click', () => window.location.assign("/index.html"));
         divElement.appendChild(this.form);
         divElement.appendChild(saveButton);
         divElement.appendChild(cancelButton);
     }
+    SetDefault(defaultValues) {
+        for (let i = 0; i > defaultValues.length; i++) {
+            this.fieldInputs[i].SetDefaultValue(defaultValues[i]);
+        }
+    }
     GetValue() {
         let values = [];
-        let newDiv = document.createElement('div');
         for (let field of this.fieldInputs) {
             values.push(field.GetValue());
-            let newP = document.createElement('p');
-            newP.innerHTML = field.GetValue();
-            newDiv.appendChild(newP);
         }
         return values;
     }

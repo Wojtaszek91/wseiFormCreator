@@ -1,23 +1,42 @@
 export class LocStorage {
-    SaveDocumentInList(newDocumentId) {
-        let docsIds = localStorage.getItem('DocumentsIds');
-        if (docsIds === null) {
+    SaveDocumentInList(newDocumentId, formId) {
+        if (localStorage.getItem('DocumentsIds') === null) {
             let docsIds = new Array();
-            docsIds.push(newDocumentId);
+            docsIds.push([newDocumentId, formId]);
             localStorage.setItem('DocumentsIds', JSON.stringify(docsIds));
         }
         else {
             let docsIds = JSON.parse(localStorage.getItem('DocumentsIds'));
-            docsIds.push(newDocumentId);
+            docsIds.push([newDocumentId, formId]);
             localStorage.setItem('DocumentsIds', JSON.stringify(docsIds));
         }
     }
-    SaveDocument(doc) {
+    SaveFormInList(newFormId) {
+        if (localStorage.getItem('FormsIds') === null) {
+            let formsIds = new Array();
+            formsIds.push(newFormId);
+            localStorage.setItem('FormsIds', JSON.stringify(formsIds));
+        }
+        else {
+            let formsIds = JSON.parse(localStorage.getItem('DocumentsIds'));
+            formsIds.push(newFormId);
+            localStorage.setItem('FormsIds', JSON.stringify(formsIds));
+        }
+    }
+    SaveDocument(doc, formId) {
         const newDocumentId = 'Document-'.concat(Date.now().toString());
-        console.log(doc);
         localStorage.setItem(newDocumentId, JSON.stringify(doc));
-        this.SaveDocumentInList(newDocumentId);
+        this.SaveDocumentInList(newDocumentId, formId);
         return newDocumentId;
+    }
+    SaveForm(form) {
+        const newFormId = 'Form-'.concat(Date.now().toString());
+        localStorage.setItem(newFormId, JSON.stringify(form));
+        this.SaveFormInList(newFormId);
+        return newFormId;
+    }
+    LoadForm(Id) {
+        return JSON.parse(localStorage.getItem(Id));
     }
     LoadDocument(Id) {
         let documentFromStorage = localStorage.getItem(Id);
@@ -25,10 +44,10 @@ export class LocStorage {
             return JSON.parse(documentFromStorage);
         }
     }
-    DeleteDocument(Id) {
-        localStorage.removeItem(Id);
+    DeleteDocument(docId, formId) {
+        localStorage.removeItem(docId);
         let docsList = this.GetDocuments();
-        let docIndex = docsList.indexOf(Id);
+        let docIndex = docsList.indexOf([docId, formId]);
         docsList.splice(docIndex, 1);
         localStorage.setItem('DocumentsIds', JSON.stringify(docsList));
     }
@@ -37,6 +56,15 @@ export class LocStorage {
         if (docs != null) {
             let parsedDocs = JSON.parse(docs);
             return parsedDocs;
+        }
+        else
+            return new Array();
+    }
+    GetForms() {
+        let forms = localStorage.getItem('FormsIds');
+        if (forms != null) {
+            let parsedForms = JSON.parse(forms);
+            return parsedForms;
         }
         else
             return new Array();

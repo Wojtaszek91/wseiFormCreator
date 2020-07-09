@@ -5,6 +5,7 @@ import { SelectField } from "./SelectField.js";
 import { TextAreaField } from "./TextAreaField.js";
 import { DateField } from "./DateField.js";
 import { LocStorage } from "../LocStorage.js";
+//import { FormCreator } from "../FormCreator.js";
 
   export class Form {
     public fieldInputs = new Array< CheckboxField | DateField | EmailField | InputField | SelectField | TextAreaField>();
@@ -12,9 +13,10 @@ import { LocStorage } from "../LocStorage.js";
     storage = new LocStorage();
 
     
-    constructor(fieldInputs: Array<CheckboxField | DateField | EmailField | InputField | SelectField | TextAreaField>) {
+    constructor(fieldInputs: Array<CheckboxField | DateField | EmailField | InputField | SelectField | TextAreaField>, id: string) {
         this.fieldInputs = fieldInputs;
         this.form = document.createElement("form");
+        this.form.id = id;
         fieldInputs.forEach((element: CheckboxField | DateField | EmailField | InputField | SelectField | TextAreaField) => {
           let newDiv = document.createElement('div');
           element.label.RenderLabel(newDiv);
@@ -24,16 +26,18 @@ import { LocStorage } from "../LocStorage.js";
         
     }
 
-    Render(divElement: HTMLDivElement) {
+    Render(divElement: HTMLDivElement, isNewForm: boolean) {
       let saveButton = document.createElement('button');
-      saveButton.textContent = 'Zapisz';
-      let values = this.GetValue();
+      saveButton.textContent = 'Save';
+      saveButton.id = 'saveBtn';
+      if(isNewForm)
       saveButton.addEventListener('click', ()=>
-      this.storage.SaveDocument(values)
+      this.storage.SaveDocument(this.GetValue(), this.form.id)
      );
-      
+     
       let cancelButton = document.createElement('button');
-      cancelButton.textContent = 'Anuluj';
+      cancelButton.textContent = 'Cancel';
+      cancelButton.id = 'cancelBtn';
       cancelButton.addEventListener('click', ()=>
       window.location.assign("/index.html")
       );
@@ -42,14 +46,15 @@ import { LocStorage } from "../LocStorage.js";
       divElement.appendChild(cancelButton);
     }
 
+    SetDefault(defaultValues: string[]){
+      for(let i = 0; i > defaultValues.length; i++){
+        this.fieldInputs[i].SetDefaultValue(defaultValues[i])
+      }
+    }
     GetValue(): any[]{
       let values = [];
-      let newDiv = document.createElement('div');
       for (let field of this.fieldInputs){
         values.push(field.GetValue());
-        let newP = document.createElement('p');
-        newP.innerHTML = field.GetValue()
-        newDiv.appendChild(newP);
       }
       return values;
     }

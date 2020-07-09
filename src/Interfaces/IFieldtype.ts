@@ -3,7 +3,9 @@ export interface IFieldType {
 label: FieldLabel,
 fieldType: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement,
 GetValue(): string,
-Render(hostingElement: HTMLElement): void
+SetDefaultValue(value: string): void,
+Render(hostingElement: HTMLElement): void,
+GetField(): any
 }
 
 

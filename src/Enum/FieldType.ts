@@ -1,3 +1,3 @@
 export const enum FieldType {
-    Input = 'input', TextAreaField = 'TEXTAREA', EmailField = 'Email', SelectField = 'Select', CheckboxField = 'Checkbox'
+    Input = 'input', Date = 'date', TextAreaField = 'textarea', EmailField = 'email', SelectField = 'select', CheckboxField = 'checkbox'
 }

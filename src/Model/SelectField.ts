@@ -22,6 +22,10 @@ export class SelectField implements IFieldType{
         Render(hostingElement: HTMLDivElement){
             hostingElement.appendChild(this.fieldType);
         }
+        SetDefaultValue(value: string){
+          this.fieldType.selectedOptions[parseInt(value)].selected;
+      }
+
              setOptions(
       optionsStringList: string[],
       selectField: HTMLSelectElement
@@ -32,4 +36,7 @@ export class SelectField implements IFieldType{
         selectField.add(optionEl);
       }
     }
+    GetField(): any{
+      return this.fieldType;
+  }
     }

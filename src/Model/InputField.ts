@@ -10,13 +10,20 @@ export class InputField implements IFieldType{
             this.fieldType.id = idOfField;
             this.fieldType.name = idOfField;
             this.label = labelField;
-            this.fieldType.value = "inputField";
             
         }
         GetValue() {
            return this.fieldType.value;
         }
+        SetDefaultValue(value: string){
+            let field = document.getElementById(this.fieldType.id);
+            return field?.nodeValue;
+            this.fieldType.defaultValue = value;
+        }
         Render(hostingElement: HTMLDivElement){
             hostingElement.appendChild(this.fieldType);
+        }
+        GetField(): any{
+            return this.fieldType;
         }
     }

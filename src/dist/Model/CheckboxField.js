@@ -9,8 +9,14 @@ export class CheckboxField {
     GetValue() {
         return this.fieldType.checked.toString();
     }
+    SetDefaultValue(value) {
+        this.fieldType.checked = (value == 'true');
+    }
     Render(hostingElement) {
         hostingElement.appendChild(this.fieldType);
+    }
+    GetField() {
+        return this.fieldType;
     }
 }
 //# sourceMappingURL=CheckboxField.js.map
