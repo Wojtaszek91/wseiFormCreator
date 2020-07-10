@@ -16,7 +16,7 @@ import {LocStorage} from "./LocStorage.js";
         dataArray.push('Edit');
         dataArray.push('Delete');
         dataArray.push('Form Id');
-console.log(this.ListOfDocsIds)
+
         this.GenerateTableHead(tableWithDocsIds, dataArray);
         this.GenerateTableBody(tableWithDocsIds, this.ListOfDocsIds);
         document.getElementById('tableDiv')?.appendChild(tableWithDocsIds);

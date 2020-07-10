@@ -18,7 +18,7 @@ export class LocStorage {
             localStorage.setItem('FormsIds', JSON.stringify(formsIds));
         }
         else {
-            let formsIds = JSON.parse(localStorage.getItem('DocumentsIds'));
+            let formsIds = JSON.parse(localStorage.getItem('FormsIds'));
             formsIds.push(newFormId);
             localStorage.setItem('FormsIds', JSON.stringify(formsIds));
         }

@@ -16,8 +16,6 @@ export class InputField implements IFieldType{
            return this.fieldType.value;
         }
         SetDefaultValue(value: string){
-            let field = document.getElementById(this.fieldType.id);
-            return field?.nodeValue;
             this.fieldType.defaultValue = value;
         }
         Render(hostingElement: HTMLDivElement){

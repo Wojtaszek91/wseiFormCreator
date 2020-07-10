@@ -22,4 +22,5 @@ formValues.forEach((e) => {
 
 let form = fromCrt.CreateNewForm(formValues,idForm!);
 form.SetDefault(docValues);
+
 form.Render(formDiv,true);

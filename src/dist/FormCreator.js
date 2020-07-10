@@ -13,8 +13,6 @@ export class FormCreator {
         this.inputsArray = new Array();
     }
     CreateNewForm(frmValues, id) {
-        console.log('ok');
-        console.log(frmValues[0][0]);
         frmValues.forEach((e) => {
             switch (e[1]) {
                 case "checkbox".toString():
@@ -36,7 +34,6 @@ export class FormCreator {
                     this.inputsArray.push(inputEmail);
                     break;
                 case 'input':
-                    console.log('input');
                     let labelInput = new FieldLabel(e[0], e[2]);
                     let inputText = new InputField(e[2], labelInput);
                     inputText.SetDefaultValue(e[3]);
@@ -99,8 +96,41 @@ export class FormCreator {
             console.log(this.formValues);
         }
     }
+    RenderTableWithForms(hostingDivElement) {
+        var _a;
+        const localStorage = new LocStorage();
+        const fromsIds = localStorage.GetForms();
+        let tableWithForms = document.createElement('table');
+        let dataArray = new Array();
+        dataArray.push('Forms Id');
+        this.GenerateTableHead(tableWithForms, dataArray);
+        this.GenerateTableBody(tableWithForms, fromsIds);
+        (_a = document.getElementById(hostingDivElement)) === null || _a === void 0 ? void 0 : _a.appendChild(tableWithForms);
+    }
+    GenerateTableHead(table, headersData) {
+        let thead = table.createTHead();
+        let row = thead.insertRow();
+        for (let key of headersData) {
+            let th = document.createElement("th");
+            let text = document.createTextNode(key);
+            th.appendChild(text);
+            row.appendChild(th);
+        }
+    }
+    GenerateTableBody(table, docData) {
+        let tbody = document.createElement('tbody');
+        for (let i = 0; i < docData.length; i++) {
+            let row = tbody.insertRow();
+            let cellFormsIds = row.insertCell();
+            let formIdLink = document.createElement("a");
+            formIdLink.setAttribute("href", "new-documents.html?formId=".concat(docData[i]));
+            let EditLinkText = document.createTextNode(docData[i]);
+            formIdLink.appendChild(EditLinkText);
+            cellFormsIds.appendChild(formIdLink);
+        }
+        table.appendChild(tbody);
+    }
     SaveForm(values) {
-        console.log(values);
         let localStorage = new LocStorage();
         localStorage.SaveForm(values);
     }

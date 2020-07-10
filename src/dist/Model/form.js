@@ -28,7 +28,8 @@ export class Form {
         divElement.appendChild(cancelButton);
     }
     SetDefault(defaultValues) {
-        for (let i = 0; i > defaultValues.length; i++) {
+        console.log(defaultValues);
+        for (let i = 0; i < defaultValues.length; i++) {
             this.fieldInputs[i].SetDefaultValue(defaultValues[i]);
         }
     }

@@ -21,7 +21,7 @@ import {IDataStorage} from "./Interfaces/IDataStorage.js"
                 localStorage.setItem('FormsIds', JSON.stringify(formsIds));
             }
             else {
-                let formsIds = JSON.parse(localStorage.getItem('DocumentsIds')!) as Array<string>;
+                let formsIds = JSON.parse(localStorage.getItem('FormsIds')!) as Array<string>;
                 formsIds.push(newFormId);
                 localStorage.setItem('FormsIds', JSON.stringify(formsIds));
             }        

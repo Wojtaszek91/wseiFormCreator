@@ -15,7 +15,6 @@ export class DocumentsList {
         dataArray.push('Edit');
         dataArray.push('Delete');
         dataArray.push('Form Id');
-        console.log(this.ListOfDocsIds);
         this.GenerateTableHead(tableWithDocsIds, dataArray);
         this.GenerateTableBody(tableWithDocsIds, this.ListOfDocsIds);
         (_a = document.getElementById('tableDiv')) === null || _a === void 0 ? void 0 : _a.appendChild(tableWithDocsIds);

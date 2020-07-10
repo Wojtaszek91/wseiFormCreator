@@ -9,8 +9,6 @@ export class InputField {
         return this.fieldType.value;
     }
     SetDefaultValue(value) {
-        let field = document.getElementById(this.fieldType.id);
-        return field === null || field === void 0 ? void 0 : field.nodeValue;
         this.fieldType.defaultValue = value;
     }
     Render(hostingElement) {
