@@ -7,18 +7,18 @@ export class SelectField {
         this.setOptions(selectOptions, this.fieldType);
     }
     GetValue() {
-        let selectedOption = this.fieldType.options[this.fieldType.selectedIndex];
+        const selectedOption = this.fieldType.options[this.fieldType.selectedIndex];
         return selectedOption.innerText;
     }
     Render(hostingElement) {
         hostingElement.appendChild(this.fieldType);
     }
     SetDefaultValue(value) {
-        this.fieldType.selectedOptions[parseInt(value)].selected;
+        this.fieldType.selectedIndex = parseInt(value);
     }
     setOptions(optionsStringList, selectField) {
         for (const option of optionsStringList) {
-            var optionEl = document.createElement("option");
+            let optionEl = document.createElement("option");
             optionEl.text = option;
             selectField.add(optionEl);
         }

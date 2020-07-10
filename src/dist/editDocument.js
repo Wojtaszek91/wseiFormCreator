@@ -10,6 +10,7 @@ let docValues = locStor.LoadDocument(idDoc);
 let formDiv = document.getElementById('formDiv');
 let fromCrt = new FormCreator();
 formValues.forEach((e) => {
+    console.log(e);
     fromCrt.AddField(e, false);
 });
 let form = fromCrt.CreateNewForm(formValues, idForm);

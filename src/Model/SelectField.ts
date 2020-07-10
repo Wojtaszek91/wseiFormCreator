@@ -15,7 +15,7 @@ export class SelectField implements IFieldType{
             
         }
         GetValue() {
-           let selectedOption = this.fieldType.options[this.fieldType.selectedIndex];
+           const selectedOption = this.fieldType.options[this.fieldType.selectedIndex];
            return selectedOption.innerText;
 
         }
@@ -23,7 +23,7 @@ export class SelectField implements IFieldType{
             hostingElement.appendChild(this.fieldType);
         }
         SetDefaultValue(value: string){
-          this.fieldType.selectedOptions[parseInt(value)].selected;
+          this.fieldType.selectedIndex =parseInt(value);
       }
 
              setOptions(
@@ -31,7 +31,7 @@ export class SelectField implements IFieldType{
       selectField: HTMLSelectElement
     ) {
       for (const option of optionsStringList) {
-        var optionEl = document.createElement("option") as HTMLOptionElement;
+        let optionEl = document.createElement("option") as HTMLOptionElement;
         optionEl.text = option;
         selectField.add(optionEl);
       }

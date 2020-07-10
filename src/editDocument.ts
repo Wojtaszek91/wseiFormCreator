@@ -17,6 +17,7 @@ let formDiv = document.getElementById('formDiv') as HTMLDivElement;
 let fromCrt = new FormCreator();
 
 formValues.forEach((e) => {
+    console.log(e);
     fromCrt.AddField(e,false);
 });
 

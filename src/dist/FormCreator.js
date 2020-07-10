@@ -9,7 +9,6 @@ import { LocStorage } from "./LocStorage.js";
 import { Form } from "./Model/form.js";
 export class FormCreator {
     constructor() {
-        this.formValues = new Array();
         this.inputsArray = new Array();
     }
     CreateNewForm(frmValues, id) {
@@ -69,31 +68,115 @@ export class FormCreator {
         let typeInput = new SelectField('typeId', typeLabel, selectOptions);
         let idOfFieldLabel = new FieldLabel('Id of field ', 'fieldId');
         let idOfField = new InputField('fieldId', idOfFieldLabel);
-        let defaultValueLabel = new FieldLabel('Default value ', 'defaultId');
-        let defaultValueInput = new InputField('defaultId', defaultValueLabel);
-        let createInputForm = new Form([nameInput, typeInput, idOfField, defaultValueInput], 'creatingForm');
+        let createInputForm = new Form([nameInput, typeInput, idOfField], 'creatingForm');
         let finishBtn = document.createElement('button');
         finishBtn.innerHTML = 'Finish';
         finishBtn.addEventListener('click', () => {
-            this.SaveForm(this.formValues);
+            this.SaveForm(FormCreator.formValues);
         });
         createInputForm.Render(hostingDiv, false);
+        let inputsSaveBtn = document.createElement('button');
+        inputsSaveBtn.textContent = 'Save default values';
+        inputsSaveBtn.addEventListener('click', this.SaveDefaults);
+        hostingDiv.appendChild(inputsSaveBtn);
         hostingDiv.appendChild(finishBtn);
         let saveBtn = document.getElementById('saveBtn');
         saveBtn.addEventListener('click', () => {
             this.AddField(createInputForm.GetValue(), true);
         });
     }
+    SaveDefaults() {
+        FormCreator.formValues.forEach((e) => {
+            switch (e[1]) {
+                case "checkbox":
+                    const inputWithValue = document.getElementById(e[2]);
+                    const valueCheckbox = inputWithValue.checked;
+                    e[3] = valueCheckbox.toString();
+                    break;
+                case "date":
+                    const dateInput = document.getElementById(e[2]);
+                    e[3] = dateInput.value;
+                    break;
+                case "email":
+                    const emailField = document.getElementById(e[2]);
+                    e[3] = emailField.value;
+                    break;
+                case "input":
+                    const input = document.getElementById(e[2]);
+                    e[3] = input.value;
+                    break;
+                case "select":
+                    const selectField = document.getElementById(e[2]);
+                    const index = selectField.selectedIndex;
+                    e[3] = index;
+                    let optionsArray = new Array();
+                    for (let i = 0; i < selectField.options.length; i++) {
+                        optionsArray.push(selectField.options[i].value);
+                        console.log(selectField.options[i].toString());
+                    }
+                    e[4] = optionsArray;
+                    break;
+                case "textarea":
+                    const textAreaField = document.getElementById(e[2]);
+                    e[3] = textAreaField.value;
+                    break;
+            }
+        });
+    }
+    AddSelectOptionMenu(hostingDiv, selectFieldId) {
+        const optionInputLabel = new FieldLabel('Add option ', selectFieldId + 1);
+        const optionInput = new InputField(selectFieldId + 1, optionInputLabel);
+        const addBtn = document.createElement('button');
+        addBtn.innerHTML = 'Add';
+        addBtn.addEventListener('click', () => {
+            this.RenderOptionSelect(optionInput.GetValue(), selectFieldId);
+        });
+        optionInputLabel.RenderLabel(hostingDiv);
+        optionInput.Render(hostingDiv);
+        hostingDiv.appendChild(addBtn);
+        return hostingDiv;
+    }
+    RenderOptionSelect(optionValue, selectInputId) {
+        let selectField = document.getElementById(selectInputId);
+        let optionEl = document.createElement("option");
+        optionEl.text = optionValue;
+        selectField.add(optionEl);
+    }
     AddField(values, renderValues) {
-        this.formValues.push(values);
+        FormCreator.formValues.push(values);
         if (renderValues) {
-            let p = document.createElement('p');
-            values.forEach((e) => {
-                p.innerHTML = p.innerHTML + " " + e;
-            });
+            let p = document.createElement('div');
+            const label = new FieldLabel(values[0], values[2]);
+            switch (values[1]) {
+                case "checkbox":
+                    const checkField = new CheckboxField(values[2], label);
+                    checkField.Render(p);
+                    break;
+                case "date":
+                    const dateField = new DateField(values[2], label);
+                    dateField.Render(p);
+                    break;
+                case "email":
+                    const emailField = new EmailField(values[2], label);
+                    emailField.Render(p);
+                    break;
+                case "input":
+                    const input = new InputField(values[2], label);
+                    input.Render(p);
+                    break;
+                case "select":
+                    const selectField = new SelectField(values[2], label, []);
+                    selectField.Render(p);
+                    this.AddSelectOptionMenu(p, values[2]);
+                    break;
+                case "textarea":
+                    const textAreaField = new TextAreaField(values[2], label);
+                    textAreaField.Render(p);
+                    break;
+            }
             let div = document.getElementById('inputs');
-            div === null || div === void 0 ? void 0 : div.appendChild(p);
-            console.log(this.formValues);
+            label.RenderLabel(div);
+            div.appendChild(p);
         }
     }
     RenderTableWithForms(hostingDivElement) {
@@ -135,4 +218,5 @@ export class FormCreator {
         localStorage.SaveForm(values);
     }
 }
+FormCreator.formValues = new Array();
 //# sourceMappingURL=FormCreator.js.map
