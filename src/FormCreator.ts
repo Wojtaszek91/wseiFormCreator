@@ -208,6 +208,7 @@ export class FormCreator {
       const fromsIds = localStorage.GetForms() as string[];
 
       let tableWithForms = document.createElement('table');
+      tableWithForms.className = 'table table-striped';
       let dataArray = new Array();
       dataArray.push('Forms Id');
 
