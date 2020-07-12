@@ -11,40 +11,40 @@ export class FormCreator {
     constructor() {
         this.inputsArray = new Array();
     }
-    CreateNewForm(frmValues, id) {
+    CreateNewForm(frmValues, formId) {
         frmValues.forEach((e) => {
             switch (e[1]) {
-                case "checkbox".toString():
+                case '0':
                     let labelCheck = new FieldLabel(e[0], e[2]);
                     let inputCheck = new CheckboxField(e[2], labelCheck);
                     inputCheck.SetDefaultValue(e[3]);
                     this.inputsArray.push(inputCheck);
                     break;
-                case "date".toString():
+                case '1':
                     let labelDate = new FieldLabel(e[0], e[2]);
                     let inputDate = new DateField(e[2], labelDate);
                     inputDate.SetDefaultValue(e[3]);
                     this.inputsArray.push(inputDate);
                     break;
-                case "email".toString():
+                case '2':
                     let labelEmail = new FieldLabel(e[0], e[2]);
                     let inputEmail = new EmailField(e[2], labelEmail);
                     inputEmail.SetDefaultValue(e[3]);
                     this.inputsArray.push(inputEmail);
                     break;
-                case 'input':
+                case '3':
                     let labelInput = new FieldLabel(e[0], e[2]);
                     let inputText = new InputField(e[2], labelInput);
                     inputText.SetDefaultValue(e[3]);
                     this.inputsArray.push(inputText);
                     break;
-                case "select".toString():
+                case '4':
                     let labelSelect = new FieldLabel(e[0], e[2]);
                     let inputSelect = new SelectField(e[2], labelSelect, e[4]);
                     inputSelect.SetDefaultValue(e[3]);
                     this.inputsArray.push(inputSelect);
                     break;
-                case "textarea".toString():
+                case '5':
                     let labelArea = new FieldLabel(e[0], e[2]);
                     let inputArea = new TextAreaField(e[2], labelArea);
                     inputArea.SetDefaultValue(e[3]);
@@ -52,7 +52,7 @@ export class FormCreator {
                     break;
             }
         });
-        let newForm = new Form(this.inputsArray, id);
+        let newForm = new Form(this.inputsArray, formId);
         return newForm;
     }
     FormCreatorMenu(hostingDiv) {
@@ -88,45 +88,44 @@ export class FormCreator {
     SaveDefaults() {
         FormCreator.formValues.forEach((e) => {
             switch (e[1]) {
-                case "checkbox":
-                    const inputWithValue = document.getElementById(e[2]);
-                    const valueCheckbox = inputWithValue.checked;
+                case '0':
+                    let inputWithValue = document.getElementById(e[2]);
+                    let valueCheckbox = inputWithValue.checked;
                     e[3] = valueCheckbox.toString();
                     break;
-                case "date":
-                    const dateInput = document.getElementById(e[2]);
+                case '1':
+                    let dateInput = document.getElementById(e[2]);
                     e[3] = dateInput.value;
                     break;
-                case "email":
-                    const emailField = document.getElementById(e[2]);
+                case '2':
+                    let emailField = document.getElementById(e[2]);
                     e[3] = emailField.value;
                     break;
-                case "input":
-                    const input = document.getElementById(e[2]);
+                case '3':
+                    let input = document.getElementById(e[2]);
                     e[3] = input.value;
                     break;
-                case "select":
-                    const selectField = document.getElementById(e[2]);
+                case '4':
+                    let selectField = document.getElementById(e[2]);
                     const index = selectField.selectedIndex;
                     e[3] = index;
                     let optionsArray = new Array();
                     for (let i = 0; i < selectField.options.length; i++) {
                         optionsArray.push(selectField.options[i].value);
-                        console.log(selectField.options[i].toString());
                     }
                     e[4] = optionsArray;
                     break;
-                case "textarea":
-                    const textAreaField = document.getElementById(e[2]);
+                case '5':
+                    let textAreaField = document.getElementById(e[2]);
                     e[3] = textAreaField.value;
                     break;
             }
         });
     }
     AddSelectOptionMenu(hostingDiv, selectFieldId) {
-        const optionInputLabel = new FieldLabel('Add option ', selectFieldId + 1);
-        const optionInput = new InputField(selectFieldId + 1, optionInputLabel);
-        const addBtn = document.createElement('button');
+        let optionInputLabel = new FieldLabel('Add option ', selectFieldId + 1);
+        let optionInput = new InputField(selectFieldId + 1, optionInputLabel);
+        let addBtn = document.createElement('button');
         addBtn.innerHTML = 'Add';
         addBtn.addEventListener('click', () => {
             this.RenderOptionSelect(optionInput.GetValue(), selectFieldId);
@@ -148,28 +147,28 @@ export class FormCreator {
             let p = document.createElement('div');
             const label = new FieldLabel(values[0], values[2]);
             switch (values[1]) {
-                case "checkbox":
+                case '0':
                     const checkField = new CheckboxField(values[2], label);
                     checkField.Render(p);
                     break;
-                case "date":
+                case '1':
                     const dateField = new DateField(values[2], label);
                     dateField.Render(p);
                     break;
-                case "email":
+                case '2':
                     const emailField = new EmailField(values[2], label);
                     emailField.Render(p);
                     break;
-                case "input":
+                case '3':
                     const input = new InputField(values[2], label);
                     input.Render(p);
                     break;
-                case "select":
-                    const selectField = new SelectField(values[2], label, []);
+                case '4':
+                    let selectField = new SelectField(values[2], label, []);
                     selectField.Render(p);
                     this.AddSelectOptionMenu(p, values[2]);
                     break;
-                case "textarea":
+                case '5':
                     const textAreaField = new TextAreaField(values[2], label);
                     textAreaField.Render(p);
                     break;

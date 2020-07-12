@@ -7,8 +7,7 @@ export class SelectField {
         this.setOptions(selectOptions, this.fieldType);
     }
     GetValue() {
-        const selectedOption = this.fieldType.options[this.fieldType.selectedIndex];
-        return selectedOption.innerText;
+        return this.fieldType.selectedIndex.toString();
     }
     Render(hostingElement) {
         hostingElement.appendChild(this.fieldType);

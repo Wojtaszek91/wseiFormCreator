@@ -27,12 +27,14 @@ import {IDataStorage} from "./Interfaces/IDataStorage.js"
             }        
         }
 
-        SaveDocument(doc:any, formId: string) {
+        SaveDocument(doc:any, formId: string, docId?: string) {
+            if(docId==undefined){
             const newDocumentId = 'Document-'.concat(Date.now().toString());
-            localStorage.setItem(newDocumentId,JSON.stringify(doc));
             this.SaveDocumentInList(newDocumentId, formId);
-
-            return newDocumentId;
+            localStorage.setItem(newDocumentId,JSON.stringify(doc));
+            } else if (docId) {
+                localStorage.setItem(docId,JSON.stringify(doc));
+            }
         }
 
         SaveForm(form: any){

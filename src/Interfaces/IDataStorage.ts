@@ -1,5 +1,5 @@
     export interface IDataStorage {
-        SaveDocument(document:any, id: string):any,
+        SaveDocument(document:any, idForm: string, docId?: string):void,
         LoadDocument(Id:string):any,
         GetDocuments(): Array<string[]>;
     }

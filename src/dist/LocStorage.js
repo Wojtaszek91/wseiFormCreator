@@ -23,11 +23,15 @@ export class LocStorage {
             localStorage.setItem('FormsIds', JSON.stringify(formsIds));
         }
     }
-    SaveDocument(doc, formId) {
-        const newDocumentId = 'Document-'.concat(Date.now().toString());
-        localStorage.setItem(newDocumentId, JSON.stringify(doc));
-        this.SaveDocumentInList(newDocumentId, formId);
-        return newDocumentId;
+    SaveDocument(doc, formId, docId) {
+        if (docId == undefined) {
+            const newDocumentId = 'Document-'.concat(Date.now().toString());
+            this.SaveDocumentInList(newDocumentId, formId);
+            localStorage.setItem(newDocumentId, JSON.stringify(doc));
+        }
+        else if (docId) {
+            localStorage.setItem(docId, JSON.stringify(doc));
+        }
     }
     SaveForm(form) {
         const newFormId = 'Form-'.concat(Date.now().toString());

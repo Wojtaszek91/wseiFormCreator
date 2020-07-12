@@ -15,15 +15,15 @@ export class SelectField implements IFieldType{
             
         }
         GetValue() {
-           const selectedOption = this.fieldType.options[this.fieldType.selectedIndex];
-           return selectedOption.innerText;
-
+          return this.fieldType.selectedIndex.toString();
         }
+
+
         Render(hostingElement: HTMLDivElement){
             hostingElement.appendChild(this.fieldType);
         }
         SetDefaultValue(value: string){
-          this.fieldType.selectedIndex =parseInt(value);
+          this.fieldType.selectedIndex = parseInt(value);
       }
 
              setOptions(

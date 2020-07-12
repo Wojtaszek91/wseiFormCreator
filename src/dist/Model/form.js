@@ -1,11 +1,11 @@
 import { LocStorage } from "../LocStorage.js";
 export class Form {
-    constructor(fieldInputs, id) {
+    constructor(fieldInputs, formId) {
         this.fieldInputs = new Array();
         this.storage = new LocStorage();
         this.fieldInputs = fieldInputs;
         this.form = document.createElement("form");
-        this.form.id = id;
+        this.form.id = formId;
         fieldInputs.forEach((element) => {
             let newDiv = document.createElement('div');
             element.label.RenderLabel(newDiv);
@@ -13,12 +13,18 @@ export class Form {
             this.form.appendChild(newDiv);
         });
     }
-    Render(divElement, isNewForm) {
+    Render(divElement, isNewForm, docId) {
         let saveButton = document.createElement('button');
         saveButton.textContent = 'Save';
         saveButton.id = 'saveBtn';
-        if (isNewForm)
-            saveButton.addEventListener('click', () => this.storage.SaveDocument(this.GetValue(), this.form.id));
+        if (isNewForm) {
+            if (!docId == undefined) {
+                saveButton.addEventListener('click', () => this.storage.SaveDocument(this.GetValue(), this.form.id));
+            }
+            else {
+                saveButton.addEventListener('click', () => this.storage.SaveDocument(this.GetValue(), this.form.id, docId));
+            }
+        }
         let cancelButton = document.createElement('button');
         cancelButton.textContent = 'Cancel';
         cancelButton.id = 'cancelBtn';
@@ -28,7 +34,6 @@ export class Form {
         divElement.appendChild(cancelButton);
     }
     SetDefault(defaultValues) {
-        console.log(defaultValues);
         for (let i = 0; i < defaultValues.length; i++) {
             this.fieldInputs[i].SetDefaultValue(defaultValues[i]);
         }

@@ -5,7 +5,6 @@ import { SelectField } from "./SelectField.js";
 import { TextAreaField } from "./TextAreaField.js";
 import { DateField } from "./DateField.js";
 import { LocStorage } from "../LocStorage.js";
-//import { FormCreator } from "../FormCreator.js";
 
   export class Form {
     public fieldInputs = new Array< CheckboxField | DateField | EmailField | InputField | SelectField | TextAreaField>();
@@ -13,10 +12,10 @@ import { LocStorage } from "../LocStorage.js";
     storage = new LocStorage();
 
     
-    constructor(fieldInputs: Array<CheckboxField | DateField | EmailField | InputField | SelectField | TextAreaField>, id: string) {
+    constructor(fieldInputs: Array<CheckboxField | DateField | EmailField | InputField | SelectField | TextAreaField>, formId: string) {
         this.fieldInputs = fieldInputs;
         this.form = document.createElement("form");
-        this.form.id = id;
+        this.form.id = formId;
         fieldInputs.forEach((element: CheckboxField | DateField | EmailField | InputField | SelectField | TextAreaField) => {
           let newDiv = document.createElement('div');
           element.label.RenderLabel(newDiv);
@@ -26,14 +25,20 @@ import { LocStorage } from "../LocStorage.js";
         
     }
 
-    Render(divElement: HTMLDivElement, isNewForm: boolean) {
+    Render(divElement: HTMLDivElement, isNewForm: boolean, docId?: string) {
       let saveButton = document.createElement('button');
       saveButton.textContent = 'Save';
       saveButton.id = 'saveBtn';
-      if(isNewForm)
+      if(isNewForm){
+        if(!docId == undefined){
       saveButton.addEventListener('click', ()=>
       this.storage.SaveDocument(this.GetValue(), this.form.id)
-     );
+      );
+      } else{
+        saveButton.addEventListener('click', () => 
+        this.storage.SaveDocument(this.GetValue(), this.form.id, docId))
+        }
+      }
      
       let cancelButton = document.createElement('button');
       cancelButton.textContent = 'Cancel';
@@ -47,15 +52,14 @@ import { LocStorage } from "../LocStorage.js";
     }
 
     SetDefault(defaultValues: string[]){
-      console.log(defaultValues)
       for(let i = 0; i < defaultValues.length; i++){
-        this.fieldInputs[i].SetDefaultValue(defaultValues[i])
+        this.fieldInputs[i].SetDefaultValue(defaultValues[i]);
       }
     }
     GetValue(): any[]{
       let values = [];
       for (let field of this.fieldInputs){
-        values.push(field.GetValue());
+        values.push(field.GetValue());      
       }
       return values;
     }

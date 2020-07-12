@@ -17,11 +17,10 @@ let formDiv = document.getElementById('formDiv') as HTMLDivElement;
 let fromCrt = new FormCreator();
 
 formValues.forEach((e) => {
-    console.log(e);
     fromCrt.AddField(e,false);
 });
 
 let form = fromCrt.CreateNewForm(formValues,idForm!);
 form.SetDefault(docValues);
 
-form.Render(formDiv,true);
+form.Render(formDiv,true, idDoc!);
