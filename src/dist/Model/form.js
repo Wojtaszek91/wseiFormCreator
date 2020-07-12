@@ -16,6 +16,7 @@ export class Form {
     Render(divElement, isNewForm, docId) {
         let saveButton = document.createElement('button');
         saveButton.textContent = 'Save';
+        saveButton.className = 'btn-success';
         saveButton.id = 'saveBtn';
         if (isNewForm) {
             if (!docId == undefined) {
@@ -28,6 +29,7 @@ export class Form {
         let cancelButton = document.createElement('button');
         cancelButton.textContent = 'Cancel';
         cancelButton.id = 'cancelBtn';
+        cancelButton.className = 'btn-danger';
         cancelButton.addEventListener('click', () => window.location.assign("/index.html"));
         divElement.appendChild(this.form);
         divElement.appendChild(saveButton);

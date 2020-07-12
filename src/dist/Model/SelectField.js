@@ -2,6 +2,8 @@ export class SelectField {
     constructor(idOfField, labelField, selectOptions) {
         this.fieldType = document.createElement("select");
         this.fieldType.id = idOfField;
+        this.fieldType.className = 'form-control';
+        this.fieldType.style.width = '40%';
         this.fieldType.name = idOfField;
         this.label = labelField;
         this.setOptions(selectOptions, this.fieldType);

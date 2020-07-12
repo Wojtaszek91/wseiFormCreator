@@ -11,6 +11,7 @@ import {LocStorage} from "./LocStorage.js";
     }
     Render(){
         let tableWithDocsIds = document.createElement('table');
+        tableWithDocsIds.className = 'table table-striped'
         let dataArray = new Array();
         dataArray.push('Documents Id');
         dataArray.push('Edit');
@@ -40,6 +41,7 @@ import {LocStorage} from "./LocStorage.js";
 
         for (let i = 0 ; i<docData.length; i++) {
             let row = tbody.insertRow();
+
             let cellDocId = row.insertCell();
             let textDocId = document.createTextNode(docData[i][0]);
             cellDocId.appendChild(textDocId);

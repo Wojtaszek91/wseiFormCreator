@@ -10,6 +10,7 @@ export class DocumentsList {
     Render() {
         var _a;
         let tableWithDocsIds = document.createElement('table');
+        tableWithDocsIds.className = 'table table-striped';
         let dataArray = new Array();
         dataArray.push('Documents Id');
         dataArray.push('Edit');

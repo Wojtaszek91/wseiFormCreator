@@ -28,6 +28,7 @@ import { LocStorage } from "../LocStorage.js";
     Render(divElement: HTMLDivElement, isNewForm: boolean, docId?: string) {
       let saveButton = document.createElement('button');
       saveButton.textContent = 'Save';
+      saveButton.className = 'btn-success'
       saveButton.id = 'saveBtn';
       if(isNewForm){
         if(!docId == undefined){
@@ -43,6 +44,7 @@ import { LocStorage } from "../LocStorage.js";
       let cancelButton = document.createElement('button');
       cancelButton.textContent = 'Cancel';
       cancelButton.id = 'cancelBtn';
+      cancelButton.className = 'btn-danger'
       cancelButton.addEventListener('click', ()=>
       window.location.assign("/index.html")
       );

@@ -70,6 +70,7 @@ export class FormCreator {
         let idOfField = new InputField('fieldId', idOfFieldLabel);
         let createInputForm = new Form([nameInput, typeInput, idOfField], 'creatingForm');
         let finishBtn = document.createElement('button');
+        finishBtn.className = 'btn-primary';
         finishBtn.innerHTML = 'Finish';
         finishBtn.addEventListener('click', () => {
             this.SaveForm(FormCreator.formValues);
@@ -77,6 +78,7 @@ export class FormCreator {
         createInputForm.Render(hostingDiv, false);
         let inputsSaveBtn = document.createElement('button');
         inputsSaveBtn.textContent = 'Save default values';
+        inputsSaveBtn.className = 'btn-secondary';
         inputsSaveBtn.addEventListener('click', this.SaveDefaults);
         hostingDiv.appendChild(inputsSaveBtn);
         hostingDiv.appendChild(finishBtn);
@@ -126,6 +128,7 @@ export class FormCreator {
         let optionInputLabel = new FieldLabel('Add option ', selectFieldId + 1);
         let optionInput = new InputField(selectFieldId + 1, optionInputLabel);
         let addBtn = document.createElement('button');
+        addBtn.className = 'btn-success';
         addBtn.innerHTML = 'Add';
         addBtn.addEventListener('click', () => {
             this.RenderOptionSelect(optionInput.GetValue(), selectFieldId);
