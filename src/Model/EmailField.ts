@@ -12,6 +12,7 @@ export class EmailField implements IFieldType{
             this.fieldType.type = 'email';
             this.fieldType.placeholder = 'example@example.com';
             this.fieldType.defaultValue = 'example@example.com';
+            this.fieldType.className = 'form-control';
             this.label = labelField;
             
         }

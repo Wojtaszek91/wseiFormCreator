@@ -4,6 +4,7 @@ export class CheckboxField {
         this.fieldType.id = idOfField;
         this.fieldType.name = idOfField;
         this.fieldType.type = 'checkbox';
+        this.fieldType.className = 'form-control';
         this.label = labelField;
     }
     GetValue() {

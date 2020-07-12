@@ -8,6 +8,7 @@ export class Form {
         this.form.id = formId;
         fieldInputs.forEach((element) => {
             let newDiv = document.createElement('div');
+            newDiv.className = 'form-group';
             element.label.RenderLabel(newDiv);
             element.Render(newDiv);
             this.form.appendChild(newDiv);

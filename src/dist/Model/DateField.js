@@ -5,6 +5,7 @@ export class DateField {
         this.fieldType.name = idOfField;
         this.fieldType.type = 'date';
         this.fieldType.defaultValue = '2015-01-01';
+        this.fieldType.className = 'form-control';
         this.label = labelField;
     }
     GetValue() {

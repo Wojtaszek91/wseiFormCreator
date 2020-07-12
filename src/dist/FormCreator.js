@@ -74,6 +74,7 @@ export class FormCreator {
         finishBtn.innerHTML = 'Finish';
         finishBtn.addEventListener('click', () => {
             this.SaveForm(FormCreator.formValues);
+            window.location.assign("/index.html");
         });
         createInputForm.Render(hostingDiv, false);
         let inputsSaveBtn = document.createElement('button');

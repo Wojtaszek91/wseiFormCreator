@@ -10,6 +10,7 @@ export class CheckboxField implements IFieldType{
             this.fieldType.id = idOfField;
             this.fieldType.name = idOfField;
             this.fieldType.type = 'checkbox';
+            this.fieldType.className = 'form-control';
             this.label = labelField;
             
         }

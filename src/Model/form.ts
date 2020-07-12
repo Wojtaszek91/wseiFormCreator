@@ -18,6 +18,7 @@ import { LocStorage } from "../LocStorage.js";
         this.form.id = formId;
         fieldInputs.forEach((element: CheckboxField | DateField | EmailField | InputField | SelectField | TextAreaField) => {
           let newDiv = document.createElement('div');
+          newDiv.className = 'form-group'
           element.label.RenderLabel(newDiv);
           element.Render(newDiv);
           this.form.appendChild(newDiv);

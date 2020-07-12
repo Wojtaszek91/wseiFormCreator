@@ -11,6 +11,7 @@ export class TextAreaField implements IFieldType{
             this.fieldType.name = idOfField;
             this.label = labelField;
             this.fieldType.value = "textArea";
+            this.fieldType.className = 'form-control';
             
         }
         GetValue() {

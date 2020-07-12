@@ -10,6 +10,7 @@ export class InputField implements IFieldType{
             this.fieldType.id = idOfField;
             this.fieldType.name = idOfField;
             this.label = labelField;
+            this.fieldType.className = 'form-control';
             
         }
         GetValue() {

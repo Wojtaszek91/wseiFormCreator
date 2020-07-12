@@ -3,7 +3,7 @@ export class SelectField {
         this.fieldType = document.createElement("select");
         this.fieldType.id = idOfField;
         this.fieldType.className = 'form-control';
-        this.fieldType.style.width = '40%';
+        this.fieldType.style.width = '150%';
         this.fieldType.name = idOfField;
         this.label = labelField;
         this.setOptions(selectOptions, this.fieldType);
